@@ -65,11 +65,14 @@ export class RolesService {
       const page = parseInt(query.page) || 1;
       const limit = parseInt(query.limit) || 10;
       const filters: any = {};
-
       if (query.name) {
         filters.name = query.name;
       }
-
+      //created_from: thời gian bắt đầu, created_to: thời gian kết thúc
+      if (query.created_to && query.created_from) {
+        filters.created_to = query.created_to;
+        filters.created_from = query.created_from;
+      }
 
       const result = await this.roleRepo.getPaging({
         page,

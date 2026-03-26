@@ -6,6 +6,7 @@ export class BaseRepository<T> {
     constructor(
         protected readonly dataSource: DataSource,
         protected readonly tableName: string,
+        protected allowedSort: string[] = [],
     ) { }
 
     // Streaming tất cả dữ liệu, trả về Node.js Readable stream
@@ -93,26 +94,61 @@ export class BaseRepository<T> {
 
         const offset = (page - 1) * limit;
 
-        // WHERE clause
         const whereClauses: string[] = [];
         const values: any[] = [];
 
-        Object.keys(filters).forEach((key, index) => {
-            whereClauses.push(`${key} ILIKE $${index + 1}`);
-            values.push(`%${filters[key]}%`);
+        // 🔥 FILTER DYNAMIC
+        Object.keys(filters).forEach((key) => {
+            const value = filters[key];
+
+            if (value === undefined || value === null || value === '') return;
+
+            // 👉 LIKE search (string)
+            if (
+                typeof value === 'string' &&
+                key !== 'created_from' &&
+                key !== 'created_to'
+            ) {
+                whereClauses.push(`${key} ILIKE $${values.length + 1}`);
+                values.push(`%${value}%`);
+            }
+
+            // 👉 exact match (number, boolean)
+            else if (typeof value === 'number' || typeof value === 'boolean') {
+                whereClauses.push(`${key} = $${values.length + 1}`);
+                values.push(value);
+            }
         });
+
+        // 🔥 DATE RANGE
+        if (filters.created_from) {
+            whereClauses.push(`created_at >= $${values.length + 1}`);
+            values.push(filters.created_from);
+        }
+
+        if (filters.created_to) {
+            whereClauses.push(`created_at <= $${values.length + 1}`);
+            values.push(filters.created_to);
+        }
 
         const whereQuery =
             whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
 
-        // Query data
+        // 🔥 SORT ANTI SQL INJECTION
+        const safeSortBy = this.allowedSort.includes(sortBy)
+            ? sortBy
+            : this.allowedSort[0] || 'id';
+
+        const safeSortOrder = sortOrder === 'ASC' ? 'ASC' : 'DESC';
+
+        // 🔥 QUERY DATA
         const dataQuery = `
-        SELECT * FROM ${this.tableName}
-        ${whereQuery}
-        ORDER BY ${sortBy} ${sortOrder}
-        LIMIT $${values.length + 1}
-        OFFSET $${values.length + 2}
-    `;
+            SELECT * FROM ${this.tableName}
+            ${whereQuery}
+            ORDER BY ${safeSortBy} ${safeSortOrder}
+            LIMIT $${values.length + 1}
+            OFFSET $${values.length + 2}
+            `;
 
         const data = await this.dataSource.query(dataQuery, [
             ...values,
@@ -120,18 +156,17 @@ export class BaseRepository<T> {
             offset,
         ]);
 
-        // Query total
+        // 🔥 QUERY TOTAL
         const countQuery = `
         SELECT COUNT(*) as total FROM ${this.tableName}
         ${whereQuery}
-    `;
+        `;
 
         const countResult = await this.dataSource.query(countQuery, values);
-        const total = parseInt(countResult[0].total, 10);
 
         return {
             data,
-            total,
+            total: parseInt(countResult[0].total, 10),
             page,
             limit,
         };
