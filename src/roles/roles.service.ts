@@ -1,29 +1,62 @@
 import { Injectable } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 import { RoleRepository } from './role.repository';
+import { currentTimestamp } from 'utils/currentTimestamp';
+
 @Injectable()
 export class RolesService {
+
   constructor(
-    private readonly roleRepo: RoleRepository
-  ) { }
+    private readonly roleRepo: RoleRepository,
+    private readonly dataSource: DataSource,
+  ) {
+  }
 
   async create(body: any) {
     try {
+      const dataRef = {
+        name: body.name,
+        create_at: currentTimestamp()
+      }
+      // check tồn tại
+      const existing = await this.dataSource.query(
+        `SELECT id FROM role WHERE name = $1 LIMIT 1`,
+        [body.name],
+      );
 
+      if (existing.length > 0) {
+        return {
+          statusCode: 0,
+          message: 'Role name already exists',
+        };
+      }
+      return await this.roleRepo.create(dataRef);
     } catch (error) {
-      console.log(error);
-      throw error
+      console.error(error);
+      throw error;
     }
   }
+  //cấu trúc này dành cho dữ liệu cực lớn lên hàng triệu row
+  // async findAll() {
+  //   try {
+  //     try {
+  //       return await this.roleRepo.streamAll(1000);
+  //     } catch (error) {
+  //       console.error(error);
+  //       throw error;
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // }
 
   async findAll() {
     try {
       return await this.roleRepo.findAll();
     } catch (error) {
-      console.log(error);
-      throw error
+      console.error(error);
+      throw error;
     }
-
   }
-
-
 }

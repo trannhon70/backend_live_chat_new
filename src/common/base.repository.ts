@@ -1,10 +1,25 @@
 import { DataSource } from 'typeorm';
+import QueryStream from 'pg-query-stream';
+import { Readable } from 'stream';
 
 export class BaseRepository<T> {
     constructor(
         protected readonly dataSource: DataSource,
         protected readonly tableName: string,
     ) { }
+
+    // Streaming tất cả dữ liệu, trả về Node.js Readable stream
+    async streamAll(batchSize = 1000): Promise<Readable> {
+        const query = new QueryStream(`SELECT * FROM ${this.tableName}`, [], {
+            batchSize,
+        });
+        // @ts-ignore
+        const client = this.dataSource.driver.master; // lấy client Postgres
+        // Kết nối đến Postgres
+        const connection = await client.connect();
+        // Trả về Readable stream trực tiếp từ QueryStream
+        return connection.query(query);
+    }
 
     async findAll(): Promise<T[]> {
         return this.dataSource.query(`SELECT * FROM ${this.tableName}`);
@@ -21,7 +36,6 @@ export class BaseRepository<T> {
     async create(data: Partial<T>): Promise<T> {
         const keys = Object.keys(data);
         const values = Object.values(data);
-
         const columns = keys.join(', ');
         const params = keys.map((_, i) => `$${i + 1}`).join(', ');
 

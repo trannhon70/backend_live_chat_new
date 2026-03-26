@@ -8,7 +8,6 @@ export class Role {
     name: string;
 
 
-
     @Column({ nullable: true })
     create_at: string;
 }
