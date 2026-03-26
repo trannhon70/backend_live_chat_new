@@ -70,4 +70,70 @@ export class BaseRepository<T> {
             [id],
         );
     }
+
+    async getPaging(options: {
+        page?: number;
+        limit?: number;
+        sortBy?: string;
+        sortOrder?: 'ASC' | 'DESC';
+        filters?: Record<string, any>;
+    }): Promise<{
+        data: T[];
+        total: number;
+        page: number;
+        limit: number;
+    }> {
+        const {
+            page = 1,
+            limit = 10,
+            sortBy = 'id',
+            sortOrder = 'DESC',
+            filters = {},
+        } = options;
+
+        const offset = (page - 1) * limit;
+
+        // WHERE clause
+        const whereClauses: string[] = [];
+        const values: any[] = [];
+
+        Object.keys(filters).forEach((key, index) => {
+            whereClauses.push(`${key} ILIKE $${index + 1}`);
+            values.push(`%${filters[key]}%`);
+        });
+
+        const whereQuery =
+            whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
+
+        // Query data
+        const dataQuery = `
+        SELECT * FROM ${this.tableName}
+        ${whereQuery}
+        ORDER BY ${sortBy} ${sortOrder}
+        LIMIT $${values.length + 1}
+        OFFSET $${values.length + 2}
+    `;
+
+        const data = await this.dataSource.query(dataQuery, [
+            ...values,
+            limit,
+            offset,
+        ]);
+
+        // Query total
+        const countQuery = `
+        SELECT COUNT(*) as total FROM ${this.tableName}
+        ${whereQuery}
+    `;
+
+        const countResult = await this.dataSource.query(countQuery, values);
+        const total = parseInt(countResult[0].total, 10);
+
+        return {
+            data,
+            total,
+            page,
+            limit,
+        };
+    }
 }

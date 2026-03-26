@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Query } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -39,6 +39,16 @@ export class RolesController {
     return {
       statusCode: 1,
       message: 'get all role success!',
+      data: data
+    }
+  }
+
+  @Get('get-paging')
+  async getPaging(@Query() query: any) {
+    const data = await this.rolesService.getPaging(query);
+    return {
+      statusCode: 1,
+      message: 'get paging role success!',
       data: data
     }
   }

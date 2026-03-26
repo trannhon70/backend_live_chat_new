@@ -59,4 +59,30 @@ export class RolesService {
       throw error;
     }
   }
+
+  async getPaging(query: any) {
+    try {
+      const page = parseInt(query.page) || 1;
+      const limit = parseInt(query.limit) || 10;
+      const filters: any = {};
+
+      if (query.name) {
+        filters.name = query.name;
+      }
+
+
+      const result = await this.roleRepo.getPaging({
+        page,
+        limit,
+        sortBy: 'created_at',
+        sortOrder: 'DESC',
+        filters,
+      });
+
+      return result
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }

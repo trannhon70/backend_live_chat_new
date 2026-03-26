@@ -9,5 +9,5 @@ export class Role {
 
 
     @Column({ nullable: true })
-    create_at: string;
+    created_at: string;
 }
