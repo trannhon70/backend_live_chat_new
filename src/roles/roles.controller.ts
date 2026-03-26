@@ -5,30 +5,27 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('roles')
 export class RolesController {
-  constructor(private readonly rolesService: RolesService) {}
+  constructor(private readonly rolesService: RolesService) { }
 
   @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
-    return this.rolesService.create(createRoleDto);
+  async create(@Body() body: any) {
+    const data = await this.rolesService.create(body);
+    return {
+      statusCode: 1,
+      message: 'create role success!',
+      data: data
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.rolesService.findAll();
+  @Get('get-all')
+  async findAll() {
+    const data = await this.rolesService.findAll();
+    return {
+      statusCode: 1,
+      message: 'get all role success!',
+      data: data
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rolesService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.rolesService.update(+id, updateRoleDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.rolesService.remove(+id);
-  }
 }
