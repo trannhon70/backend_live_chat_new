@@ -8,6 +8,8 @@ import { RolesModule } from './roles/roles.module';
 import { RedisModule } from './redis/redis.module';
 import { CustomJwtModule } from './common/auth/auth.module';
 import { SocketModule } from './socket/socket.module';
+import { KafkaModule } from './kafka/kafka.module';
+import { KafkaConsumer } from './kafka/kafka.consumer';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -33,10 +35,11 @@ import { SocketModule } from './socket/socket.module';
     SocketModule,
     CustomJwtModule,
     RedisModule,
+    KafkaModule,
     UsersModule,
     RolesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, KafkaConsumer],
 })
 export class AppModule { }
