@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { RedisModule } from './redis/redis.module';
+import { CustomJwtModule } from './common/auth/auth.module';
+import { SocketModule } from './socket/socket.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,6 +30,8 @@ import { RedisModule } from './redis/redis.module';
         },
       }),
     }),
+    SocketModule,
+    CustomJwtModule,
     RedisModule,
     UsersModule,
     RolesModule,
