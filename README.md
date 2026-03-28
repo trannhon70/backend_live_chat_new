@@ -107,3 +107,18 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 ## link hướng dẫn youtobe, github
 - https://www.youtube.com/watch?v=hjwW9qKCkoM
 - https://github.com/k-code-yt/nestjs-microservices/blob/main/src/kafka/kafka.consumer.ts
+
+## Cấu hình chuẩn cho dự án
+Frontend
+   ↓ POST
+NestJS API
+   ↓ emit
+Kafka
+   ↓ consume
+Worker (NestJS)
+   ↓ save
+PostgreSQL
+   ↓ emit
+Socket Gateway
+   ↓
+Frontend nhận realtime

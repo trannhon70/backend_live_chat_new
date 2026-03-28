@@ -27,6 +27,9 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      
+      # 👇 THÊM DÒNG NÀY (7 ngày)
+      KAFKA_LOG_RETENTION_HOURS: 168
 
     networks:
       - kafka-network
