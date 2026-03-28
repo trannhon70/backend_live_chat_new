@@ -1,22 +1,39 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { KafkaConstants } from './kafka.constants';
+
+export interface UserCreatedEvent {
+    userId: string;
+    email: string;
+    name: string;
+    createdAt: Date;
+}
+
+export enum DomainEvents {
+    UserCreated = 'user.created',
+}
 
 @Injectable()
 export class KafkaService implements OnModuleInit {
+    private readonly logger = new Logger(KafkaService.name);
+
     constructor(
-        @Inject('KAFKA_SERVICE')
-        private readonly kafka: ClientKafka,
+        @Inject(KafkaConstants.InjectionTokens.Client)
+        private readonly kafkaClient: ClientKafka,
     ) { }
 
     async onModuleInit() {
-        // 👇 bắt buộc phải subscribe trước khi connect
-        this.kafka.subscribeToResponseOf('app.events');
-        await this.kafka.connect();
-        console.log('✅ Kafka connected');
+        await this.kafkaClient.connect();
+        this.logger.log('Kafka client connected');
     }
-    // emit → dùng cho @EventPattern
-    // send → dùng cho @MessagePattern
-    async sendMessage(data: any) {
-        return this.kafka.emit('app.events', data); // fire & forget
+
+    publishUserCreated(event: any) {
+        try {
+            this.kafkaClient.emit(DomainEvents.UserCreated, event);
+            this.logger.log(`Published user created event for user: ${event}`);
+        } catch (error) {
+            this.logger.error('Failed to publish user created event', error);
+            throw error;
+        }
     }
 }

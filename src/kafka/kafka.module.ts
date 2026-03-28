@@ -1,5 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Partitioners } from 'kafkajs';
+import { KafkaConstants } from './kafka.constants';
 import { KafkaService } from './kafka.service';
 
 @Global()
@@ -7,21 +9,19 @@ import { KafkaService } from './kafka.service';
     imports: [
         ClientsModule.register([
             {
-                name: 'KAFKA_SERVICE',
+                name: KafkaConstants.InjectionTokens.Client,
                 transport: Transport.KAFKA,
                 options: {
-                    client: {
-                        brokers: ['localhost:9092'],
-                        clientId: 'app-service',
-                    },
-                    consumer: {
-                        groupId: 'app-consumer-group',
+                    producer: {
+                        allowAutoTopicCreation: true,
+                        maxInFlightRequests: 1,
+                        createPartitioner: Partitioners.DefaultPartitioner,
                     },
                 },
             },
         ]),
     ],
     providers: [KafkaService],
-    exports: [ClientsModule], // ✅ ĐÚNG
+    exports: [KafkaService],
 })
 export class KafkaModule { }
