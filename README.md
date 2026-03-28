@@ -99,3 +99,11 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 ## Lệnh chạy docker
 - docker-compose up -d --build
+- docker-compose down
+
+## Link xem log kafka
+- http://localhost:8081/ui/clusters/local/consumer-groups 
+
+## link hướng dẫn youtobe, github
+- https://www.youtube.com/watch?v=hjwW9qKCkoM
+- https://github.com/k-code-yt/nestjs-microservices/blob/main/src/kafka/kafka.consumer.ts
