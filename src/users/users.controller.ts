@@ -1,13 +1,22 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(
+    @Inject('KAFKA_SERVICE')
+    private readonly kafkaClient: ClientKafka,
+    private readonly usersService: UsersService
+  ) { }
 
-  @Post()
+  @Post('create')
   async create(@Body() body: any) {
-    return await this.usersService.create(body);
+    this.kafkaClient.emit('app.events', {
+      type: 'user.create',
+      data: body,
+    });
+    return { message: 'User creation event emitted' };
   }
 
 

@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KafkaService } from './kafka.service';
 
+@Global()
 @Module({
     imports: [
         ClientsModule.register([
@@ -11,9 +12,10 @@ import { KafkaService } from './kafka.service';
                 options: {
                     client: {
                         brokers: ['localhost:9092'],
+                        clientId: 'app-service',
                     },
                     consumer: {
-                        groupId: 'chat-consumer',
+                        groupId: 'app-consumer-group',
                     },
                 },
             },

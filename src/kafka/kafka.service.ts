@@ -10,12 +10,13 @@ export class KafkaService implements OnModuleInit {
 
     async onModuleInit() {
         // 👇 bắt buộc phải subscribe trước khi connect
-        this.kafka.subscribeToResponseOf('chat.send');
+        this.kafka.subscribeToResponseOf('app.events');
         await this.kafka.connect();
         console.log('✅ Kafka connected');
     }
-
+    // emit → dùng cho @EventPattern
+    // send → dùng cho @MessagePattern
     async sendMessage(data: any) {
-        return this.kafka.emit('chat.send', data); // fire & forget
+        return this.kafka.emit('app.events', data); // fire & forget
     }
 }
