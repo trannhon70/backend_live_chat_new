@@ -4,3 +4,9 @@ export const expiresIn = '12h'
 
 // export const expirationTime = 30 * 1000; // 30 giây (milliseconds)
 // export const expiresIn = '30s'; // 30 giây
+
+
+export const CheckRoles = {
+    ADMIN: "Admin",
+    TUVAN: "Tư Vấn"
+}
