@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Role } from 'src/roles/entities/role.entity';
 import { User } from './entities/user.entity';
-import { KafkaConsumer } from 'src/kafka/kafka.consumer';
+import { UsersConsumer } from './users.consumer';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
-  controllers: [UsersController, KafkaConsumer],
+  imports: [TypeOrmModule.forFeature([User, Role])
+  ],
+  controllers: [UsersController, UsersConsumer],
   providers: [UsersService],
 })
 export class UsersModule { }

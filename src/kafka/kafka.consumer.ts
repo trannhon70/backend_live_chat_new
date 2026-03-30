@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { DomainEvents, UserCreatedEvent } from './kafka.service';
+import { DomainEvents } from './kafka.events';
 
 @Controller()
 export class KafkaConsumer {
