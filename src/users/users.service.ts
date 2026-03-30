@@ -30,7 +30,7 @@ export class UsersService {
     if (!user) {
       throw new BadRequestException('Email không tồn tại!');
     }
-    if (user.delete === false) {
+    if (user.is_deleted === false) {
       throw new BadRequestException('Tài khoản này đã bị xóa!');
     }
 
@@ -50,7 +50,7 @@ export class UsersService {
     const payload = {
       email: user.email,
       id: user.id,
-      fullName: user.fullName,
+      fullName: user.full_name,
       role: user.role,
     };
 
@@ -66,7 +66,7 @@ export class UsersService {
     await this.redisService.setKey(`user:${user.id}:session`, JSON.stringify(sessionData), Math.floor(expirationTime / 1000));
 
     // ✅ Cập nhật trạng thái online
-    user.online = true;
+    user.is_online = true;
     await this.userRepo.save(user);
 
     return {
@@ -74,10 +74,10 @@ export class UsersService {
       user: {
         email: user.email,
         id: user.id,
-        fullName: user.fullName,
+        full_name: user.full_name,
         created_at: user.created_at,
         role: user.role,
-        online: user.online,
+        is_online: user.is_online,
         avatar: user.avatar,
         quantity: user.quantity
       },

@@ -1,44 +1,35 @@
 import { Role } from 'src/roles/entities/role.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 
-@Entity()
+@Entity('users')
 export class User {
     @PrimaryGeneratedColumn("increment")
     id: number;
 
-    //Chức vụ
-    @Column()
-    roleId: number;
-    @ManyToOne(() => Role, (role) => role.id)
+    @ManyToOne(() => Role)
+    @JoinColumn({ name: 'role_id' })
     role: Role;
 
-    //email
     @Column({ nullable: true })
-    email: string
+    email: string;
 
-    //mật khẩu
     @Column({ nullable: true })
     password: string;
 
-    //tên user
     @Column({ nullable: true })
-    fullName: string;
+    full_name: string;
 
-    //ngày sinh
     @Column({ nullable: true })
-    ngaySinh: string;
+    ngay_sinh: string;
 
-    //Số điện thoại
     @Column({ nullable: true })
     phone: string;
 
-
-    // 0 là đã khóa, 1 chưa khóa
     @Column({ default: true })
-    delete: boolean;
+    is_deleted: boolean;
 
-    @Column({ type: 'boolean', nullable: true })
-    online: boolean;
+    @Column({ type: 'boolean', nullable: true, default: false })
+    is_online: boolean;
 
     @Column({ type: 'varchar', length: 255, nullable: true })
     avatar: string;
@@ -49,9 +40,8 @@ export class User {
 
     //thứ tự nhận chat
     @Column({ default: 0 })
-    order: number;
+    sort_order: number;
 
-    //thời gian tạo
     @Column()
     created_at: number;
 }

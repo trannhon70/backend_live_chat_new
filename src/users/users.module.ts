@@ -9,12 +9,13 @@ import { AuthMiddleware } from 'src/common/middleware/auth.middleware';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 import { RoleMiddleware } from 'src/common/middleware/role.middleware';
 import { CheckRoles } from 'utils';
+import { UsersRepository } from './users.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Role])
   ],
   controllers: [UsersController, UsersConsumer],
-  providers: [UsersService],
+  providers: [UsersService, UsersRepository],
 })
 
 export class UsersModule implements NestModule {
@@ -25,10 +26,10 @@ export class UsersModule implements NestModule {
       .forRoutes(
         { path: 'users/create', method: RequestMethod.POST },
       );
-    consumer
-      .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))
-      .forRoutes(
-        { path: 'users/update', method: RequestMethod.POST }
-      );
+    // consumer
+    //   .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))
+    //   .forRoutes(
+    //     { path: 'users/update', method: RequestMethod.POST }
+    //   );
   }
 }

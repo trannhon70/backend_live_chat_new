@@ -55,6 +55,7 @@ export class RolesService {
     try {
       return await this.roleRepo.findAll();
     } catch (error) {
+
       console.error(error);
       throw error;
     }

@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { DomainEvents } from 'src/kafka/kafka.events';
 import { currentTimestamp } from 'utils/currentTimestamp';
 import * as bcrypt from 'bcryptjs';
+import { UsersRepository } from './users.repository';
 
 let saltOrRounds = 10;
 @Controller()
@@ -15,25 +16,27 @@ export class UsersConsumer {
     constructor(
         @InjectRepository(User)
         private readonly userRepo: Repository<User>,
+        private readonly usersRepo: UsersRepository,
     ) { }
 
     @EventPattern(DomainEvents.UserCreated)
     async handleUserCreated(@Payload() body: any) {
         try {
-            const users = await this.userRepo.find();
+            const users = await this.usersRepo.findAll();
+
             const hashPassword = await bcrypt.hash(body.password, saltOrRounds)
             const data: any = {
-                roleId: body.roleId || '',
+                role_Id: body.role_Id || '',
                 email: body.email || '',
                 password: hashPassword || '',
-                fullName: body.fullName || '',
-                ngaySinh: body.ngaySinh || '',
+                full_name: body.full_name || '',
+                ngay_sinh: body.ngay_sinh || '',
                 phone: body.phone || '',
                 quantity: body.quantity || 0,
-                order: users.length + 1 || 0,
+                sort_order: users.length + 1 || 0,
                 created_at: currentTimestamp(),
             }
-            return await this.userRepo.save(data)
+            return await this.usersRepo.create(data)
         } catch (error) {
             this.logger.error('Failed to process user created event', error);
         }
