@@ -45,7 +45,6 @@ export class UsersConsumer {
     @EventPattern(DomainEvents.User_update_profile)
     async handleUserUpdateProfile(@Payload() payload: any) {
         try {
-
             const body = {
                 full_name: payload.full_name,
                 ngay_sinh: payload.ngay_sinh,

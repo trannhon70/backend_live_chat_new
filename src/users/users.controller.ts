@@ -74,7 +74,6 @@ export class UsersController {
     return {
       statusCode: 1,
       message: 'cập nhật thành công!',
-
     };
   }
 

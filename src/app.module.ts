@@ -9,6 +9,8 @@ import { RedisModule } from './redis/redis.module';
 import { CustomJwtModule } from './common/auth/auth.module';
 import { SocketModule } from './socket/socket.module';
 import { KafkaModule } from './kafka/kafka.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,6 +32,10 @@ import { KafkaModule } from './kafka/kafka.module';
           max: 10, // max connections
         },
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'), // Thư mục chứa file tĩnh
+      serveRoot: '/api/uploads',               // Đường dẫn để truy cập
     }),
     SocketModule,
     CustomJwtModule,
