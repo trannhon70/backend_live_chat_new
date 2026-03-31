@@ -25,6 +25,7 @@ export class UsersModule implements NestModule {
       .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN]))
       .forRoutes(
         { path: 'users/create', method: RequestMethod.POST },
+        { path: 'users/get-paging', method: RequestMethod.GET },
       );
     consumer
       .apply(AuthMiddleware, LoggerMiddleware)

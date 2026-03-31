@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DomainEvents } from 'src/kafka/kafka.events';
 import { KafkaService } from 'src/kafka/kafka.service';
@@ -74,6 +74,16 @@ export class UsersController {
     return {
       statusCode: 1,
       message: 'cập nhật thành công!',
+    };
+  }
+
+  @Get('get-paging-admin')
+  async getPagingAdmin(@Req() req: any, @Query() query: any) {
+    const data = await this.usersService.getPagingAdmin(req, query);
+    return {
+      statusCode: 1,
+      message: 'get paging user success!',
+      data: data
     };
   }
 

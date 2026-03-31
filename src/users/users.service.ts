@@ -7,7 +7,7 @@ import { DataSource, Repository } from 'typeorm';
 import { expirationTime } from 'utils';
 import { currentTimestamp } from 'utils/currentTimestamp';
 import { User } from './entities/user.entity';
-let saltOrRounds = 10;
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -103,6 +103,45 @@ export class UsersService {
     }
 
     return user[0].user;
+  }
+
+  async getPagingAdmin(req: any, query: any) {
+    try {
+      const pageIndex = query.pageIndex ? parseInt(query.pageIndex, 10) : 1;
+      const pageSize = query.pageSize ? parseInt(query.pageSize, 10) : 10;
+      const search = query.search || "";
+      const skip = (pageIndex - 1) * pageSize;
+      let whereCondition = '';
+      const parameters: any = {};
+
+      if (search) {
+        if (whereCondition) whereCondition += ' AND ';
+        whereCondition += '(users.fullName LIKE :search OR users.email LIKE :search)';
+        parameters.search = `%${search}%`;
+      }
+
+      const qb = this.userRepo.createQueryBuilder('users')
+        .leftJoinAndSelect('users.role', 'role')
+        .skip(skip)
+        .take(pageSize)
+        .orderBy('users.id', 'DESC');
+
+      if (whereCondition) {
+        qb.where(whereCondition, parameters);
+      }
+      const [result, total] = await qb.getManyAndCount();
+      return {
+        data: result,
+        total: total,
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+        totalPages: Math.ceil(total / pageSize),
+
+      };
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
   }
 
 
