@@ -22,10 +22,11 @@ export class UsersModule implements NestModule {
 
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))
+      .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN]))
       .forRoutes(
-      // { path: 'users/create', method: RequestMethod.POST },
-    );
+        { path: 'users/create', method: RequestMethod.POST },
+        { path: 'users/get-by-id-user', method: RequestMethod.GET },
+      );
     // consumer
     //   .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))
     //   .forRoutes(

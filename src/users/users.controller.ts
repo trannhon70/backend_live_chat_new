@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DomainEvents } from 'src/kafka/kafka.events';
 import { KafkaService } from 'src/kafka/kafka.service';
@@ -45,5 +45,14 @@ export class UsersController {
     };
   }
 
+  @Get('get-by-id-user')
+  async GetByIdUser(@Req() req: any) {
+    const data = await this.usersService.GetByIdUser(req.user.id);
+    return {
+      statusCode: 1,
+      message: 'get by id user success!',
+      data: data
+    };
+  }
 
 }

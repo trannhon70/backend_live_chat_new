@@ -7,7 +7,7 @@ import { currentTimestamp } from 'utils/currentTimestamp';
 import { expirationTime } from 'utils';
 import { JwtService } from '@nestjs/jwt';
 import { RedisService } from 'src/redis/redis.service';
-
+import { DataSource } from 'typeorm';
 let saltOrRounds = 10;
 @Injectable()
 export class UsersService {
@@ -15,6 +15,7 @@ export class UsersService {
     @InjectRepository(User)
     private userRepo: Repository<User>,
 
+    private readonly dataSource: DataSource,
     private readonly jwtService: JwtService, // Inject JwtService
     private readonly redisService: RedisService,
   ) { }
@@ -86,4 +87,22 @@ export class UsersService {
     }
   }
 
+  async GetByIdUser(userId: number) {
+    const user = await this.dataSource.query(`
+      SELECT 
+        (to_jsonb(u) - 'password') || jsonb_build_object(
+          'role', to_jsonb(r)
+        ) AS user
+      FROM users u
+      LEFT JOIN roles r ON u.role_id = r.id
+      WHERE u.id = $1
+      LIMIT 1
+    `, [userId]);
+
+    if (!user.length) {
+      throw new Error('User not found');
+    }
+
+    return user[0].user;
+  }
 }
