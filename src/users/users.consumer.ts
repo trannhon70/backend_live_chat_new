@@ -71,4 +71,15 @@ export class UsersConsumer {
             throw error;
         }
     }
+
+    @EventPattern(DomainEvents.User_update_password)
+    async handleUserUpdatePassword(@Payload() payload: any) {
+        try {
+            const hashPassword = await bcrypt.hash(payload.password, saltOrRounds)
+            return await this.usersRepoConfig.update(payload.id, { password: hashPassword })
+        } catch (error) {
+            this.logger.error('Failed to process user created event', error);
+            throw error;
+        }
+    }
 }

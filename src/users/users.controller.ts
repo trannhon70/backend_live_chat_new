@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Put, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DomainEvents } from 'src/kafka/kafka.events';
 import { KafkaService } from 'src/kafka/kafka.service';
@@ -93,6 +93,19 @@ export class UsersController {
     return {
       statusCode: 1,
       message: 'account locked successfully!',
+    };
+  }
+
+  @Put('update-password/:id')
+  async updatePassword(@Body() body: any, @Param() param: any) {
+    const data = {
+      id: param.id,
+      password: body.password
+    }
+    this.kafkaService.publish(DomainEvents.User_update_password, data);
+    return {
+      statusCode: 1,
+      message: 'update password successfully!',
     };
   }
 

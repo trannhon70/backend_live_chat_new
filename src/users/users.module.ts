@@ -27,6 +27,7 @@ export class UsersModule implements NestModule {
         { path: 'users/create', method: RequestMethod.POST },
         { path: 'users/get-paging', method: RequestMethod.GET },
         { path: 'users/close-the-lock', method: RequestMethod.POST },
+        { path: 'users/update-password/:id', method: RequestMethod.PUT },
       );
     consumer
       .apply(AuthMiddleware, LoggerMiddleware)
