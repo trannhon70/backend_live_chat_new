@@ -42,6 +42,6 @@ export class User {
     @Column({ default: 0 })
     sort_order: number;
 
-    @Column()
+    @Column({ nullable: true })
     created_at: number;
-}
+} 

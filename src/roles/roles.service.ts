@@ -16,11 +16,11 @@ export class RolesService {
     try {
       const dataRef = {
         name: body.name,
-        create_at: currentTimestamp()
+        created_at: currentTimestamp()
       }
       // check tồn tại
       const existing = await this.dataSource.query(
-        `SELECT id FROM role WHERE name = $1 LIMIT 1`,
+        `SELECT id FROM roles WHERE name = $1 LIMIT 1`,
         [body.name],
       );
 

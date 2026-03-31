@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-@Entity()
+@Entity('roles')
 export class Role {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryGeneratedColumn("increment")
     id: number;
 
     @Column({ nullable: true })
@@ -9,5 +9,5 @@ export class Role {
 
 
     @Column({ nullable: true })
-    created_at: string;
+    created_at: number;
 }
