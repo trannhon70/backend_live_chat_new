@@ -1,12 +1,12 @@
 // users/users.consumer.ts
-import { BadRequestException, Controller, Logger } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Logger } from '@nestjs/common';
+import { EventPattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { DomainEvents } from 'src/kafka/kafka.events';
-import { currentTimestamp } from 'utils/currentTimestamp';
 import * as bcrypt from 'bcryptjs';
+import { DomainEvents } from 'src/kafka/kafka.events';
+import { Repository } from 'typeorm';
+import { currentTimestamp } from 'utils/currentTimestamp';
+import { User } from './entities/user.entity';
 import { UsersRepository } from './users.repository';
 
 let saltOrRounds = 10;
@@ -39,6 +39,7 @@ export class UsersConsumer {
             return await this.usersRepoConfig.create(data)
         } catch (error) {
             this.logger.error('Failed to process user created event', error);
+            throw error;
         }
     }
 
@@ -54,6 +55,20 @@ export class UsersConsumer {
             return await this.usersRepoConfig.update(Number(payload.userId), body)
         } catch (error) {
             this.logger.error('Failed to process user created event', error);
+            throw error;
+        }
+    }
+
+    @EventPattern(DomainEvents.User_close_the_lock)
+    async handleUserCloseTheLock(@Payload() payload: any) {
+        try {
+            if (payload.id) {
+                const result = await this.usersRepoConfig.update(payload.id, { is_deleted: payload.is_deleted });
+                return result
+            }
+        } catch (error) {
+            this.logger.error('Failed to process user created event', error);
+            throw error;
         }
     }
 }

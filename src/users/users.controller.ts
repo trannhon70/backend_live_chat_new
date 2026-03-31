@@ -87,4 +87,13 @@ export class UsersController {
     };
   }
 
+  @Post('close-the-lock')
+  async closeTheLock(@Body() body: any) {
+    this.kafkaService.publish(DomainEvents.User_close_the_lock, body);
+    return {
+      statusCode: 1,
+      message: 'account locked successfully!',
+    };
+  }
+
 }
