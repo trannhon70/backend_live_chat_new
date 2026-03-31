@@ -116,7 +116,7 @@ export class UsersService {
 
       if (search) {
         if (whereCondition) whereCondition += ' AND ';
-        whereCondition += '(users.fullName LIKE :search OR users.email LIKE :search)';
+        whereCondition += '(users.full_name LIKE :search OR users.email LIKE :search)';
         parameters.search = `%${search}%`;
       }
 
