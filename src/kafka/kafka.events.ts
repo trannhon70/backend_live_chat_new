@@ -1,5 +1,5 @@
 export enum DomainEvents {
     UserCreated = 'user.created',
-    OrderCreated = 'order.created',
-    PaymentSuccess = 'payment.success',
+    User_update_profile = 'user_update_profile',
+
 }

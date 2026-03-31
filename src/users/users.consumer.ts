@@ -16,13 +16,13 @@ export class UsersConsumer {
     constructor(
         @InjectRepository(User)
         private readonly userRepo: Repository<User>,
-        private readonly usersRepo: UsersRepository,
+        private readonly usersRepoConfig: UsersRepository,
     ) { }
 
     @EventPattern(DomainEvents.UserCreated)
     async handleUserCreated(@Payload() body: any) {
         try {
-            const users = await this.usersRepo.findAll();
+            const users = await this.usersRepoConfig.findAll();
 
             const hashPassword = await bcrypt.hash(body.password, saltOrRounds)
             const data: any = {
@@ -36,7 +36,23 @@ export class UsersConsumer {
                 sort_order: users.length + 1 || 0,
                 created_at: currentTimestamp(),
             }
-            return await this.usersRepo.create(data)
+            return await this.usersRepoConfig.create(data)
+        } catch (error) {
+            this.logger.error('Failed to process user created event', error);
+        }
+    }
+
+    @EventPattern(DomainEvents.User_update_profile)
+    async handleUserUpdateProfile(@Payload() payload: any) {
+        try {
+
+            const body = {
+                full_name: payload.full_name,
+                ngay_sinh: payload.ngay_sinh,
+                phone: payload.phone,
+                avatar: payload.file ? `${process.env.URL_BACKEND}/api/uploads/${payload.file}` : null
+            }
+            return await this.usersRepoConfig.update(Number(payload.userId), body)
         } catch (error) {
             this.logger.error('Failed to process user created event', error);
         }

@@ -1,13 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import * as bcrypt from 'bcryptjs';
-import { currentTimestamp } from 'utils/currentTimestamp';
-import { expirationTime } from 'utils';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcryptjs';
 import { RedisService } from 'src/redis/redis.service';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
+import { expirationTime } from 'utils';
+import { currentTimestamp } from 'utils/currentTimestamp';
+import { User } from './entities/user.entity';
 let saltOrRounds = 10;
 @Injectable()
 export class UsersService {
@@ -105,4 +104,6 @@ export class UsersService {
 
     return user[0].user;
   }
+
+
 }

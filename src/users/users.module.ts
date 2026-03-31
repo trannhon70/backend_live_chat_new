@@ -25,12 +25,12 @@ export class UsersModule implements NestModule {
       .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN]))
       .forRoutes(
         { path: 'users/create', method: RequestMethod.POST },
-        { path: 'users/get-by-id-user', method: RequestMethod.GET },
       );
-    // consumer
-    //   .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))
-    //   .forRoutes(
-    //     { path: 'users/update', method: RequestMethod.POST }
-    //   );
+    consumer
+      .apply(AuthMiddleware, LoggerMiddleware)
+      .forRoutes(
+        { path: 'users/get-by-id-user', method: RequestMethod.GET },
+        { path: 'users/update-profile', method: RequestMethod.POST },
+      );
   }
 }
