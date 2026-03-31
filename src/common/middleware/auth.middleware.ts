@@ -16,8 +16,8 @@ export class AuthMiddleware implements NestMiddleware {
   constructor(
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    // @InjectRepository(User)
+    // private readonly userRepository: Repository<User>,
     // private readonly socketService: SocketService
   ) { }
 

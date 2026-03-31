@@ -24,8 +24,8 @@ export class UsersModule implements NestModule {
     consumer
       .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))
       .forRoutes(
-        { path: 'users/create', method: RequestMethod.POST },
-      );
+      // { path: 'users/create', method: RequestMethod.POST },
+    );
     // consumer
     //   .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))
     //   .forRoutes(
