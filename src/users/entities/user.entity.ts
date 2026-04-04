@@ -6,6 +6,9 @@ export class User {
     @PrimaryGeneratedColumn("increment")
     id: number;
 
+    @Column({ nullable: true })
+    role_id: number;
+
     @ManyToOne(() => Role)
     @JoinColumn({ name: 'role_id' })
     role: Role;

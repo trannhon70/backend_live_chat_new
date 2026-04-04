@@ -144,5 +144,17 @@ export class UsersService {
     }
   }
 
+  async getById(req: any, param: any) {
+    try {
+      if (param.id) {
+        console.log(param);
 
+        const result = await this.userRepo.findOneBy({ id: param.id });
+        return result
+      }
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  }
 }

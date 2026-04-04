@@ -25,6 +25,7 @@ export class RolesModule implements NestModule {
       .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN]))
       .forRoutes(
         { path: 'roles', method: RequestMethod.POST },
+        { path: 'roles/get-all', method: RequestMethod.POST },
       );
     // consumer
     //   .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN, CheckRoles.TUVAN]))

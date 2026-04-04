@@ -109,4 +109,14 @@ export class UsersController {
     };
   }
 
+  @Get('get-by-id/:id')
+  async getById(@Req() req: any, @Param() param: any) {
+    const data = await this.usersService.getById(req, param);
+    return {
+      statusCode: 1,
+      message: 'get by id successfully!',
+      data: data
+    };
+  }
+
 }
