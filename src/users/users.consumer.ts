@@ -86,7 +86,8 @@ export class UsersConsumer {
     @MessagePattern(DomainEvents.User_update_item)
     async handleUserUpdateUser(@Payload() payload: any) {
         try {
-            const result = await this.userRepo.update(payload.id, payload)
+            const { id, ...data } = payload;
+            const result = await this.userRepo.update(id, data)
             return {
                 success: true,
                 result
