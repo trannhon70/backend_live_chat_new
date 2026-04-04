@@ -80,7 +80,7 @@ export class RedisService implements OnModuleDestroy {
         });
     }
 
-    async setKey(key: string, value: string, ttlInSeconds: number) {
+    async setKey(key: string, value: any, ttlInSeconds: number) {
         await this.redis.set(key, value, 'EX', ttlInSeconds);
     }
 

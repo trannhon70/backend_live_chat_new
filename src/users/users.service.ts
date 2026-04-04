@@ -87,6 +87,13 @@ export class UsersService {
   }
 
   async GetByIdUser(userId: number) {
+    const cacheKey = `user:${userId}`;
+
+    const cacheUser = await this.redisService.getKey(cacheKey);
+    if (cacheUser) {
+      return JSON.parse(cacheUser);
+    }
+
     const user = await this.dataSource.query(`
       SELECT 
         (to_jsonb(u) - 'password') || jsonb_build_object(
@@ -102,9 +109,12 @@ export class UsersService {
       throw new Error('User not found');
     }
 
-    return user[0].user;
-  }
+    const userData = user[0].user;
 
+    await this.redisService.setKey(cacheKey, JSON.stringify(userData), 3600);
+
+    return userData;
+  }
   async getPagingAdmin(req: any, query: any) {
     try {
       const pageIndex = query.pageIndex ? parseInt(query.pageIndex, 10) : 1;
@@ -147,8 +157,6 @@ export class UsersService {
   async getById(req: any, param: any) {
     try {
       if (param.id) {
-        console.log(param);
-
         const result = await this.userRepo.findOneBy({ id: param.id });
         return result
       }
