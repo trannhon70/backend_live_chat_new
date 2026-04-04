@@ -119,4 +119,18 @@ export class UsersController {
     };
   }
 
+  @Put('update/:id')
+  async update(@Body() body: any, @Param() param: any) {
+    const payload = {
+      id: param.id,
+      ...body
+    }
+    const result = await this.kafkaService.send(DomainEvents.User_update_item, payload);
+    return {
+      statusCode: 1,
+      message: 'update user successfully!',
+      data: result
+    };
+  }
+
 }

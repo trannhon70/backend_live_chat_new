@@ -110,7 +110,7 @@ export class UsersService {
     }
 
     const userData = user[0].user;
-
+    //Lưu redis 1 tiếng
     await this.redisService.setKey(cacheKey, JSON.stringify(userData), 3600);
 
     return userData;
@@ -165,4 +165,15 @@ export class UsersService {
       throw error
     }
   }
+
+  async update(body: any, param: any) {
+    try {
+      const result = await this.userRepo.update(param.id, body)
+      return result
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  }
+
 }

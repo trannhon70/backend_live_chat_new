@@ -1,7 +1,8 @@
 import { Inject, Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { KafkaConstants } from './kafka.constants';
-
+import { lastValueFrom } from 'rxjs';
+import { DomainEvents } from './kafka.events';
 
 @Injectable()
 export class KafkaService implements OnModuleInit {
@@ -13,11 +14,29 @@ export class KafkaService implements OnModuleInit {
     ) { }
 
     async onModuleInit() {
+
+        // auto subscribe tất cả topic
+        Object.values(DomainEvents).forEach((topic) => {
+            this.kafkaClient.subscribeToResponseOf(topic);
+        });
+
         await this.kafkaClient.connect();
         this.logger.log('Kafka client connected');
     }
 
-    publish(topic: string, data: any) {
-        this.kafkaClient.emit(topic, data);
+    /**
+     * Event fire-and-forget
+     */
+    publish(topic: string, payload: any): void {
+        this.kafkaClient.emit(topic, payload);
+    }
+
+    /**
+     * Request/Response
+     */
+    async send<T = any>(topic: string, payload: any): Promise<T> {
+        return await lastValueFrom(
+            this.kafkaClient.send<T>(topic, payload),
+        );
     }
 }

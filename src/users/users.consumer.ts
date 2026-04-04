@@ -1,6 +1,6 @@
 // users/users.consumer.ts
 import { Controller, Logger } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { DomainEvents } from 'src/kafka/kafka.events';
@@ -79,6 +79,20 @@ export class UsersConsumer {
             return await this.usersRepoConfig.update(payload.id, { password: hashPassword })
         } catch (error) {
             this.logger.error('Failed to process user created event', error);
+            throw error;
+        }
+    }
+
+    @MessagePattern(DomainEvents.User_update_item)
+    async handleUserUpdateUser(@Payload() payload: any) {
+        try {
+            const result = await this.userRepo.update(payload.id, payload)
+            return {
+                success: true,
+                result
+            };
+        } catch (error) {
+            this.logger.error('Failed to process user update event', error);
             throw error;
         }
     }
