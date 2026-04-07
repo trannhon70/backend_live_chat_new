@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req, Query } from '@nestjs/common';
 import { LabelsService } from './labels.service';
 import { KafkaService } from 'src/kafka/kafka.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,6 +35,16 @@ export class LabelsController {
       statusCode: 1,
       message: 'create label successfully!',
       data: result
+    };
+  }
+
+  @Get('get-paging')
+  async getPaging(@Req() req: any, @Query() query: any) {
+    const data = await this.labelsService.getPaging(req, query);
+    return {
+      statusCode: 1,
+      message: 'get paging label success!',
+      data: data
     };
   }
 
