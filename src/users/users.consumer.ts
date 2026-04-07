@@ -26,12 +26,12 @@ export class UsersConsumer {
 
             const hashPassword = await bcrypt.hash(body.password, saltOrRounds)
             const data: any = {
-                role_Id: body.role_Id || '',
-                email: body.email || '',
-                password: hashPassword || '',
-                full_name: body.full_name || '',
-                ngay_sinh: body.ngay_sinh || '',
-                phone: body.phone || '',
+                role_Id: body.role_Id || null,
+                email: body.email || null,
+                password: hashPassword || null,
+                full_name: body.full_name || null,
+                ngay_sinh: body.ngay_sinh || null,
+                phone: body.phone || null,
                 quantity: body.quantity || 0,
                 sort_order: users.length + 1 || 0,
                 created_at: currentTimestamp(),
