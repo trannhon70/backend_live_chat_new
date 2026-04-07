@@ -26,7 +26,7 @@ export class UsersConsumer {
 
             const hashPassword = await bcrypt.hash(body.password, saltOrRounds)
             const data: any = {
-                role_Id: body.role_Id || null,
+                role_id: body.role_id || null,
                 email: body.email || null,
                 password: hashPassword || null,
                 full_name: body.full_name || null,
