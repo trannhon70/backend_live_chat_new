@@ -24,6 +24,7 @@ export class BlockIpModule implements NestModule {
       .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN]))
       .forRoutes(
         { path: 'block-ip/create', method: RequestMethod.POST },
+        { path: 'block-ip/update/:id', method: RequestMethod.PUT },
 
       );
 

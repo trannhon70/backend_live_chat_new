@@ -23,7 +23,28 @@ export class BlockIpConsumer {
         try {
             return await this.blockIpRepository.create(payload);
         } catch (error) {
-            this.logger.error('Failed to process label created event', error);
+            this.logger.error('Failed to process block ip created event', error);
+            throw error;
+        }
+    }
+
+    @MessagePattern(DomainEvents.BlockIp_update)
+    async handleBlockIpUpdate(@Payload() payload: any) {
+        try {
+            const { id, ...data } = payload
+            return await this.blockIpRepository.update(id, data);
+        } catch (error) {
+            this.logger.error('Failed to process block ip update event', error);
+            throw error;
+        }
+    }
+
+    @MessagePattern(DomainEvents.BlockIp_delete)
+    async handleBlockIpDelete(@Payload() payload: any) {
+        try {
+            return await this.blockIpRepository.delete(payload.id);
+        } catch (error) {
+            this.logger.error('Failed to process block ip update event', error);
             throw error;
         }
     }

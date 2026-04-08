@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, BadRequestException, Query, Put } from '@nestjs/common';
 import { BlockIpService } from './block_ip.service';
 import { KafkaService } from 'src/kafka/kafka.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -36,5 +36,48 @@ export class BlockIpController {
     };
   }
 
+  @Get('get-paging')
+  async getPaging(@Req() req: any, @Query() query: any) {
+    const data = await this.blockIpService.getPaging(req, query);
+    return {
+      statusCode: 1,
+      message: 'get paging block ip success!',
+      data: data
+    };
+  }
 
+  @Get('get-by-id/:id')
+  async getById(@Param() param: any) {
+    const data = await this.blockIpService.getById(param);
+    return {
+      statusCode: 1,
+      message: 'get by id block ip success!',
+      data: data
+    };
+  }
+
+  @Put('update/:id')
+  async update(@Req() req: any, @Param() param: any, @Body() body: any) {
+    const payload = {
+      id: param.id,
+      name: body.name || null,
+      status: body.status || null,
+    }
+    const result = await this.kafkaService.send(DomainEvents.BlockIp_update, payload);
+    return {
+      statusCode: 1,
+      message: 'update block ip success!',
+      data: result
+    };
+  }
+
+  @Delete('delete/:id')
+  async delete(@Req() req: any, @Param() param: any) {
+    const result = await this.kafkaService.send(DomainEvents.BlockIp_delete, param);
+    return {
+      statusCode: 1,
+      message: 'delete block ip success!',
+      data: result
+    };
+  }
 }

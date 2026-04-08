@@ -13,5 +13,7 @@ export enum DomainEvents {
 
     //block ip
     BlockIp_create = 'blockIp.create',
+    BlockIp_update = 'blockIp.update',
+    BlockIp_delete = 'blockIp.delete',
 
 }
