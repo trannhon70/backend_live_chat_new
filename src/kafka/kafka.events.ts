@@ -7,6 +7,8 @@ export enum DomainEvents {
     User_update_item = 'user.update_item',
 
     //labels
-    Label_created = 'label.create'
+    Label_created = 'label.create',
+    Label_delete = 'label.delete',
+    Label_update = 'label.update',
 
 }

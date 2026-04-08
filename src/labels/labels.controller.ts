@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req, Query, Put } from '@nestjs/common';
 import { LabelsService } from './labels.service';
 import { KafkaService } from 'src/kafka/kafka.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -48,5 +48,37 @@ export class LabelsController {
     };
   }
 
+  @Delete('delete/:id')
+  async delete(@Req() req: any, @Param() param: any) {
+    const result = await this.kafkaService.send(DomainEvents.Label_delete, param);
+    return {
+      statusCode: 1,
+      message: 'delete label successfully!',
+      data: result
+    };
+  }
 
+  @Get('get-by-id/:id')
+  async getById(@Req() req: any, @Param() param: any) {
+    const data = await this.labelsService.getById(req, param);
+    return {
+      statusCode: 1,
+      message: 'get by id label success!',
+      data: data
+    };
+  }
+
+  @Put('update/:id')
+  async update(@Req() req: any, @Body() body: any, @Param() param: any) {
+    const payload = {
+      id: param.id,
+      ...body
+    }
+    const result = await this.kafkaService.send(DomainEvents.Label_update, payload);
+    return {
+      statusCode: 1,
+      message: 'update user successfully!',
+      data: result
+    };
+  }
 }

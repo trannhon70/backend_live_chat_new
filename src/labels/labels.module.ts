@@ -24,6 +24,8 @@ export class LabelsModule implements NestModule {
       .apply(AuthMiddleware, LoggerMiddleware, RoleMiddleware([CheckRoles.ADMIN]))
       .forRoutes(
         { path: 'labels/create', method: RequestMethod.POST },
+        { path: 'labels/delete/:id', method: RequestMethod.DELETE },
+        { path: 'labels/update/:id', method: RequestMethod.PUT },
 
       );
 

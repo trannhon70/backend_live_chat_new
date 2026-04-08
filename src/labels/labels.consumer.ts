@@ -31,9 +31,26 @@ export class LabelsConsumer {
         }
     }
 
+    @MessagePattern(DomainEvents.Label_delete)
+    async handleLabelDelete(@Payload() payload: any) {
+        try {
+            return await this.labelsRepoConfig.delete(payload.id);
+        } catch (error) {
+            this.logger.error('Failed to process label delete event', error);
+            throw error;
+        }
+    }
 
-
-
+    @MessagePattern(DomainEvents.Label_update)
+    async handleLabelUpdate(@Payload() payload: any) {
+        try {
+            const { id, ...data } = payload;
+            return await this.labelsRepoConfig.update(id, data);
+        } catch (error) {
+            this.logger.error('Failed to process label update event', error);
+            throw error;
+        }
+    }
 
 
 }

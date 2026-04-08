@@ -56,5 +56,16 @@ export class LabelsService {
     }
   }
 
+  async getById(req: any, param: any) {
+    try {
+      if (param.id) {
+        return await this.labelRepo.findOneById(param)
+      }
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  }
+
 
 }
