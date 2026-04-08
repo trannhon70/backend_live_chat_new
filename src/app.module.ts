@@ -12,6 +12,7 @@ import { KafkaModule } from './kafka/kafka.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { LabelsModule } from './labels/labels.module';
+import { BlockIpModule } from './block_ip/block_ip.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -45,6 +46,7 @@ import { LabelsModule } from './labels/labels.module';
     UsersModule,
     RolesModule,
     LabelsModule,
+    BlockIpModule,
   ],
   controllers: [AppController],
   providers: [AppService],

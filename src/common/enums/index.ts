@@ -1,4 +1,4 @@
 export enum IpStatus {
-    IP = 'ip',
+    IP = 'IP',
     ID_PC = 'ID_PC',
 }

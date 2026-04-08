@@ -11,4 +11,7 @@ export enum DomainEvents {
     Label_delete = 'label.delete',
     Label_update = 'label.update',
 
+    //block ip
+    BlockIp_create = 'blockIp.create',
+
 }

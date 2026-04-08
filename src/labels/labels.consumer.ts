@@ -1,13 +1,10 @@
 // users/users.consumer.ts
 import { Controller, Logger } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcryptjs';
 import { DomainEvents } from 'src/kafka/kafka.events';
 import { User } from 'src/users/entities/user.entity';
-import { UsersRepository } from 'src/users/users.repository';
 import { Repository } from 'typeorm';
-import { currentTimestamp } from 'utils/currentTimestamp';
 import { LabelsRepository } from './labels.repository';
 
 
