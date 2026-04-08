@@ -22,8 +22,8 @@ export class LiveChatColorModule implements NestModule {
       .apply(AuthMiddleware, LoggerMiddleware)
       .forRoutes(
         { path: 'live-chat-color/create', method: RequestMethod.POST },
-
-
+        { path: 'live-chat-color/update', method: RequestMethod.POST },
+        { path: 'live-chat-color/delete/:id', method: RequestMethod.DELETE },
       );
 
   }

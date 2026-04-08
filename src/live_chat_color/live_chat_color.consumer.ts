@@ -17,7 +17,7 @@ export class LiveChatColorConsumer {
     ) { }
 
     @MessagePattern(DomainEvents.LiveChatColor_create)
-    async handleLabelCreated(@Payload() payload: any) {
+    async handleLiveChatColorCreated(@Payload() payload: any) {
         try {
             return await this.liveChatColorRepoConfig.create(payload);
 
@@ -27,8 +27,25 @@ export class LiveChatColorConsumer {
         }
     }
 
+    @MessagePattern(DomainEvents.LiveChatColor_update)
+    async handleLiveChatColorUpdate(@Payload() payload: any) {
+        try {
+            const { id, ...data } = payload
+            return await this.liveChatColorRepoConfig.update(id, data);
+        } catch (error) {
+            this.logger.error('Failed to process live chat color update event', error);
+            throw error;
+        }
+    }
 
-
-
+    @MessagePattern(DomainEvents.LiveChatColor_delete)
+    async handleLiveChatColorDelete(@Payload() payload: any) {
+        try {
+            return await this.liveChatColorRepoConfig.delete(payload.id);
+        } catch (error) {
+            this.logger.error('Failed to process live chat color delete event', error);
+            throw error;
+        }
+    }
 
 }

@@ -1,13 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query, BadRequestException } from '@nestjs/common';
-import { LiveChatColorService } from './live_chat_color.service';
-import { CreateLiveChatColorDto } from './dto/create-live_chat_color.dto';
-import { UpdateLiveChatColorDto } from './dto/update-live_chat_color.dto';
-import { KafkaService } from 'src/kafka/kafka.service';
-import { LiveChatColor } from './entities/live_chat_color.entity';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DomainEvents } from 'src/kafka/kafka.events';
+import { KafkaService } from 'src/kafka/kafka.service';
 import { Repository } from 'typeorm';
 import { currentTimestamp } from 'utils/currentTimestamp';
-import { DomainEvents } from 'src/kafka/kafka.events';
+import { LiveChatColor } from './entities/live_chat_color.entity';
+import { LiveChatColorService } from './live_chat_color.service';
 
 @Controller('live-chat-color')
 export class LiveChatColorController {
@@ -46,6 +44,26 @@ export class LiveChatColorController {
       statusCode: 1,
       message: 'get paging live chat color success!',
       data: data
+    };
+  }
+
+  @Post('update')
+  async update(@Req() req: any, @Body() body: any) {
+    const result = await this.kafkaService.send(DomainEvents.LiveChatColor_update, body);
+    return {
+      statusCode: 1,
+      message: 'cập nhật chat bot tiêu đề thành công!',
+      data: result,
+    };
+  }
+
+  @Delete('delete/:id')
+  async delete(@Req() req: any, @Param() param: any) {
+    const result = await this.kafkaService.send(DomainEvents.LiveChatColor_delete, param);
+    return {
+      statusCode: 1,
+      message: 'delete live chat color success!',
+      data: result
     };
   }
 }

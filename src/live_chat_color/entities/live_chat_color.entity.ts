@@ -1,8 +1,6 @@
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-
-
 @Entity('live_chat_color')
 export class LiveChatColor {
     @PrimaryGeneratedColumn("increment")

@@ -18,4 +18,6 @@ export enum DomainEvents {
 
     //live chat color
     LiveChatColor_create = 'liveChatColor.create',
+    LiveChatColor_update = 'liveChatColor.update',
+    LiveChatColor_delete = 'liveChatColor.delete',
 }
