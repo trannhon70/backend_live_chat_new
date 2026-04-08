@@ -13,6 +13,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { LabelsModule } from './labels/labels.module';
 import { BlockIpModule } from './block_ip/block_ip.module';
+import { LiveChatColorModule } from './live_chat_color/live_chat_color.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -47,6 +48,7 @@ import { BlockIpModule } from './block_ip/block_ip.module';
     RolesModule,
     LabelsModule,
     BlockIpModule,
+    LiveChatColorModule,
   ],
   controllers: [AppController],
   providers: [AppService],

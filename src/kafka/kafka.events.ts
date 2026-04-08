@@ -16,4 +16,6 @@ export enum DomainEvents {
     BlockIp_update = 'blockIp.update',
     BlockIp_delete = 'blockIp.delete',
 
+    //live chat color
+    LiveChatColor_create = 'liveChatColor.create',
 }
