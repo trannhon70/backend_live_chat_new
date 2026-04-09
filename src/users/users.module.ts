@@ -12,8 +12,7 @@ import { CheckRoles } from 'utils';
 import { UsersRepository } from './users.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role])
-  ],
+  imports: [TypeOrmModule.forFeature([User, Role])],
   controllers: [UsersController, UsersConsumer],
   providers: [UsersService, UsersRepository],
 })
