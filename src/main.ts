@@ -33,9 +33,6 @@ async function bootstrap() {
     `🚀 NestJS application with Kafka is running on ${process.env.PORT}`,
   );
   Logger.debug('📊 Kafdrop UI available at http://localhost:9000');
-  // báo PM2 rằng app đã sẵn sàng
-  if (process.send) {
-    process.send('ready');
-  }
+
 }
 bootstrap();
