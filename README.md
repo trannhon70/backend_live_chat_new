@@ -122,3 +122,13 @@ PostgreSQL
 Socket Gateway
    ↓
 Frontend nhận realtime
+
+
+## lệnh backup dữ liệu rồi bỏ dữ liệu vào /wwww
+ docker exec -t postgres pg_dump -U postgres livechat > backup.sql
+
+ ## Bước 1: convert UTF-16 → UTF-8
+ iconv -f UTF-16 -t UTF-8 /www/backup.sql -o /www/backup_utf8.sql
+
+  ## Bước 2: import lại vào PostgreSQL
+ cat /www/backup_utf8.sql | docker exec -i postgres psql -U postgres -d livechat
