@@ -33,6 +33,9 @@ jobs:
             # Install + build
             npm install
             npm run build
-            npm run start:dev
+
+            pm2 delete backend_live_chat_new || true
+            pm2 start dist/src/main.js --name backend_live_chat_new
+            pm2 save
 
             echo "===== DEPLOY DONE ====="
