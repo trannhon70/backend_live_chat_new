@@ -23,11 +23,7 @@ jobs:
             set -e
 
             echo "===== START DEPLOY ====="
-
-            # Node path (FORCE FIX)
-            export NODE_PATH=/www/server/nodejs/v20.17.0/lib/node_modules
-            export PATH=$PATH:/www/server/nodejs/v20.17.0/bin
-
+  
             # Move to project folder
             cd /www/wwwroot/backend_live_chat_new || exit 1
 
@@ -37,21 +33,6 @@ jobs:
             # Install + build
             npm install
             npm run build
-
-            # Ensure PM2 exists
-            if ! command -v pm2 &> /dev/null; then
-              echo "PM2 not found -> installing globally..."
-              npm install -g pm2
-            fi
-
-            # Restart app safely
-            pm2 describe backend_live_chat_new > /dev/null 2>&1
-            if [ $? -eq 0 ]; then
-              pm2 restart backend_live_chat_new
-            else
-              pm2 start dist/main.js --name backend_live_chat_new
-            fi
-
-            pm2 save
+            npm run start:dev
 
             echo "===== DEPLOY DONE ====="
