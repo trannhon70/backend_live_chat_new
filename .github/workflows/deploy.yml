@@ -23,7 +23,7 @@ jobs:
             set -e
             echo "===== START ====="
 
-            cd /var/www/backend_live_chat_new || exit 1
+            cd /www/wwwroot/backend_live_chat_new || exit 1
 
             git pull origin main
 
