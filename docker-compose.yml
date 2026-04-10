@@ -20,17 +20,12 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
-
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      
-      # 👇 THÊM DÒNG NÀY (7 ngày)
       KAFKA_LOG_RETENTION_HOURS: 168
-
     networks:
       - kafka-network
 
@@ -46,6 +41,38 @@ services:
     networks:
       - kafka-network
 
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1q2w3e4r
+      POSTGRES_DB: livechat
+    volumes:
+       - postgres-data:/var/lib/postgresql/data
+       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - kafka-network
+
+  # 👇 THÊM Ở ĐÂY (cùng cấp với postgres)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 1q2w3e4r
+    depends_on:
+      - postgres
+    networks:
+      - kafka-network
+
 networks:
   kafka-network:
     driver: bridge
+
+volumes:
+  postgres-data:
