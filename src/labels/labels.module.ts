@@ -16,7 +16,7 @@ import { LabelsConsumer } from './labels.consumer';
   controllers: [LabelsController, LabelsConsumer],
   providers: [LabelsService, LabelsRepository],
 })
-// export class LabelsModule { }
+// export class LabelsModule { } sadsa
 export class LabelsModule implements NestModule {
 
   configure(consumer: MiddlewareConsumer) {
