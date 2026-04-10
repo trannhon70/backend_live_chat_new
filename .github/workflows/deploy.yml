@@ -35,8 +35,8 @@ jobs:
 
             pm2 list || true
 
-            pm2 delete nest-app || true
-            pm2 start dist/main.js --name nest-app
+            pm2 delete backend_live_chat_new || true
+            npx pm2 start dist/main.js --name backend_live_chat_new
 
             pm2 save
 
