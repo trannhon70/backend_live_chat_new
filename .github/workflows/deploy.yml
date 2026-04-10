@@ -21,7 +21,15 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd /var/www/backend_live_chat_new
+
             git pull origin main
+
             npm install
             npm run build
-            npm run start:prod
+
+            pm2 stop backend_live_chat_new || true
+            pm2 delete backend_live_chat_new || true
+
+            pm2 start dist/main.js --name backend_live_chat_new
+
+            pm2 save
