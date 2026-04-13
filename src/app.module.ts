@@ -15,6 +15,7 @@ import { LabelsModule } from './labels/labels.module';
 import { BlockIpModule } from './block_ip/block_ip.module';
 import { LiveChatColorModule } from './live_chat_color/live_chat_color.module';
 import { LiveChatLogoModule } from './live_chat_logo/live_chat_logo.module';
+import { LiveChatCardModule } from './live_chat_card/live_chat_card.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -51,6 +52,7 @@ import { LiveChatLogoModule } from './live_chat_logo/live_chat_logo.module';
     BlockIpModule,
     LiveChatColorModule,
     LiveChatLogoModule,
+    LiveChatCardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
