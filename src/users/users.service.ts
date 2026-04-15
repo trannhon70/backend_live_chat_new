@@ -4,9 +4,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { RedisService } from 'src/redis/redis.service';
 import { DataSource, Repository } from 'typeorm';
-import { expirationTime } from 'utils';
+import { expirationTime ,CheckRoles} from 'utils';
 import { currentTimestamp } from 'utils/currentTimestamp';
 import { User } from './entities/user.entity';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
@@ -176,6 +177,20 @@ export class UsersService {
     }
   }
 
-
+async getAllTuVan(req: any) {
+    try {
+      const result = await this.userRepo.find(
+        {
+          where: {
+            role_id: CheckRoles.TUVAN,
+            is_deleted: true
+          }
+        });
+      return result
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  }
 
 }

@@ -133,4 +133,14 @@ export class UsersController {
     };
   }
 
+  @Get('get-all-tu-van')
+  async getAllTuVan(@Req() req: any) {
+    const data = await this.usersService.getAllTuVan(req);
+    return {
+      statusCode: 1,
+      message: 'get all advise successfully!',
+      data: data
+    };
+  }
+
 }

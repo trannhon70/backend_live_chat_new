@@ -7,6 +7,8 @@ export const expiresIn = '12h'
 
 
 export const CheckRoles = {
-    ADMIN: "Admin",
-    TUVAN: "Tư Vấn"
+  ADMIN: 1,
+  QUANLY: 2,
+  TUVAN: 3,
+  GOOGLE: 4,
 }
