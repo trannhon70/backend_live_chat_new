@@ -193,4 +193,20 @@ async getAllTuVan(req: any) {
     }
   }
 
+  async updateOrder(req: any, body: any) {
+    try {
+      const results: any = [];
+
+      for (const item of body) {
+        const result = await this.userRepo.update({ id: item.userId }, { sort_order: item.sort_order });
+        results.push(result);
+      }
+
+      return results;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
 }

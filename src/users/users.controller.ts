@@ -143,4 +143,14 @@ export class UsersController {
     };
   }
 
+  @Post('update-order')
+  async updateOrder(@Req() req: any, @Body() body: any) {
+    const data = await this.usersService.updateOrder(req, body);
+    return {
+      statusCode: 1,
+      message: 'update order successfully!',
+      data: data
+    };
+  }
+
 }

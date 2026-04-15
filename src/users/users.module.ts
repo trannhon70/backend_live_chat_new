@@ -34,6 +34,7 @@ export class UsersModule implements NestModule {
         { path: 'users/get-by-id-user', method: RequestMethod.GET },
         { path: 'users/update-profile', method: RequestMethod.POST },
         { path: 'users/get-all-tu-van', method: RequestMethod.GET },
+        { path: 'user/update-order', method: RequestMethod.POST },
       );
   }
 }
