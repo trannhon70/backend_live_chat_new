@@ -15,6 +15,9 @@ export class LiveChatRandomMessageService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
 
+     @InjectRepository(LiveChatRandomMessage)
+    private readonly liveChatRandomMessage: Repository<LiveChatRandomMessage>,
+
     private readonly LiveChatRandomMessageRepoConfig: LiveChatRandomMessageRepository,
 
    
@@ -36,5 +39,62 @@ export class LiveChatRandomMessageService {
    }
   }
 
+  async getPaging(user_id: number, query: any) {
+    try {
+      const pageIndex = query.pageIndex ? parseInt(query.pageIndex, 10) : 1;
+      const pageSize = query.pageSize ? parseInt(query.pageSize, 10) : 10;
+      const skip = (pageIndex - 1) * pageSize;
+      let whereCondition = '';
+      const parameters: any = {};
+
+      if (user_id) {
+        whereCondition += 'message_random.user_id = :user_id';
+        parameters.user_id = user_id;
+      }
+      const qb = this.liveChatRandomMessage.createQueryBuilder('message_random')
+        .leftJoinAndSelect('message_random.user', 'user')
+        .skip(skip)
+        .take(pageSize)
+        .orderBy('message_random.id', 'ASC');
+
+      if (whereCondition) {
+        qb.where(whereCondition, parameters);
+      }
+      const [result, total] = await qb.getManyAndCount();
+
+      return {
+        data: result,
+        total: total,
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+        totalPages: Math.ceil(total / pageSize),
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  }
+async update(req: any, param: any, body: any) {
+    try {
+      if (param.id) {
+        return await this.LiveChatRandomMessageRepoConfig.update( param.id , { name: body.name, color: body.color, time: body.time })
+      }
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  }
+
+  async delete(req: any, param: any) {
+    try {
+      if (param.id) {
+        return await this.LiveChatRandomMessageRepoConfig.delete(param.id)
+      }
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  }
  
 }

@@ -22,6 +22,8 @@ export class LiveChatRandomMessageModule implements NestModule {
          .forRoutes( 
             { path: 'live-chat-random-message/create', method: RequestMethod.POST },
             { path: 'live-chat-random-message/get-paging', method: RequestMethod.GET },
+            { path: 'live-chat-random-message/update/:id', method: RequestMethod.PUT },
+            { path: 'live-chat-random-message/delete/:id', method: RequestMethod.DELETE },
            
        ); 
    }
