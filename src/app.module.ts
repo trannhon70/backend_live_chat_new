@@ -17,6 +17,7 @@ import { LiveChatColorModule } from './live_chat_color/live_chat_color.module';
 import { LiveChatLogoModule } from './live_chat_logo/live_chat_logo.module';
 import { LiveChatCardModule } from './live_chat_card/live_chat_card.module';
 import { LiveChatRandomMessageModule } from './live_chat_random_message/live_chat_random_message.module';
+import { LiveChatTimeModule } from './live_chat_time/live_chat_time.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -55,6 +56,7 @@ import { LiveChatRandomMessageModule } from './live_chat_random_message/live_cha
     LiveChatLogoModule,
     LiveChatCardModule,
     LiveChatRandomMessageModule,
+    LiveChatTimeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
