@@ -20,4 +20,7 @@ export enum DomainEvents {
     LiveChatColor_create = 'liveChatColor.create',
     LiveChatColor_update = 'liveChatColor.update',
     LiveChatColor_delete = 'liveChatColor.delete',
+
+    //friend
+    Friend_create = 'friend.create',
 }
