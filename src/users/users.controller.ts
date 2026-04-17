@@ -153,4 +153,24 @@ export class UsersController {
     };
   }
 
+  @Get('get-paging-no-delete')
+  async getPagingNoDelete(@Req() req: any, @Query() query: any) {
+    const data = await this.usersService.getPagingNoDelete(req.user.id, query);
+    return {
+      statusCode: 1,
+      message: 'get paging user success!',
+      data: data
+    };
+  }
+
+  @Get('get-paging-user-friend')
+  async getPagingUserFriend(@Req() req: any, @Query() query: any) {
+    const data = await this.usersService.getPagingUserFriend(req, query);
+    return {
+      statusCode: 1,
+      message: 'get paging user success!',
+      data: data
+    };
+  }
+
 }
