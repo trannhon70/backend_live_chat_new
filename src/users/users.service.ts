@@ -42,11 +42,11 @@ export class UsersService {
     }
 
     // Kiểm tra Redis xem có phiên đăng nhập nào chưa
-    const currentSession = await this.redisService.getKey(`user:${user.id}:session`);
+    const currentSession = await this.redisService.get(`user:${user.id}:session`);
 
     if (currentSession) {
       // Hủy token cũ
-      await this.redisService.delKey(`user:${user.id}:session`);
+      await this.redisService.del(`user:${user.id}:session`);
     }
     const payload = {
       email: user.email,
@@ -64,7 +64,7 @@ export class UsersService {
       expiresAt: Date.now() + expirationTime,
     };
 
-    await this.redisService.setKey(`user:${user.id}:session`, JSON.stringify(sessionData), Math.floor(expirationTime / 1000));
+    await this.redisService.set(`user:${user.id}:session`, sessionData, Math.floor(expirationTime / 1000));
 
     // ✅ Cập nhật trạng thái online
     user.is_online = true;
@@ -90,9 +90,9 @@ export class UsersService {
   async GetByIdUser(userId: number) {
     const cacheKey = `user:${userId}`;
 
-    const cacheUser = await this.redisService.getKey(cacheKey);
+    const cacheUser = await this.redisService.get(cacheKey);
     if (cacheUser) {
-      return JSON.parse(cacheUser);
+      return cacheUser;
     }
 
     const user = await this.dataSource.query(`
@@ -112,7 +112,7 @@ export class UsersService {
 
     const userData = user[0].user;
     //Lưu redis 1 tiếng
-    await this.redisService.setKey(cacheKey, JSON.stringify(userData), 3600);
+    await this.redisService.set(cacheKey,userData, 3600);
 
     return userData;
   }

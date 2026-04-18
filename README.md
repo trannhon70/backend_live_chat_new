@@ -98,37 +98,49 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 ## Lệnh chạy docker
+
 - docker-compose up -d --build
 - docker-compose down
 
 ## Link xem log kafka
-- http://localhost:8081/ui/clusters/local/consumer-groups 
+
+- http://localhost:8081/ui/clusters/local/consumer-groups
 
 ## link hướng dẫn youtobe, github
+
 - https://www.youtube.com/watch?v=hjwW9qKCkoM
 - https://github.com/k-code-yt/nestjs-microservices/blob/main/src/kafka/kafka.consumer.ts
 
 ## Cấu hình chuẩn cho dự án
+
 Frontend
-   ↓ POST
+↓ POST
 NestJS API
-   ↓ emit
+↓ emit
 Kafka
-   ↓ consume
+↓ consume
 Worker (NestJS)
-   ↓ save
+↓ save
 PostgreSQL
-   ↓ emit
+↓ emit
 Socket Gateway
-   ↓
+↓
 Frontend nhận realtime
 
-
 ## lệnh backup dữ liệu rồi bỏ dữ liệu vào /wwww
- docker exec -t postgres pg_dump -U postgres livechat > backup.sql
 
- ## Bước 1: convert UTF-16 → UTF-8
- iconv -f UTF-16 -t UTF-8 /www/backup.sql -o /www/backup_utf8.sql
+docker exec -t postgres pg_dump -U postgres livechat > backup.sql
 
-  ## Bước 2: import lại vào PostgreSQL
- cat /www/backup_utf8.sql | docker exec -i postgres psql -U postgres -d livechat
+## Bước 1: convert UTF-16 → UTF-8
+
+iconv -f UTF-16 -t UTF-8 /www/backup.sql -o /www/backup_utf8.sql
+
+## Bước 2: import lại vào PostgreSQL
+
+cat /www/backup_utf8.sql | docker exec -i postgres psql -U postgres -d livechat
+
+## redis server config lại
+
+maxmemory 1gb
+maxmemory-policy allkeys-lru
+notify-keyspace-events Ex
