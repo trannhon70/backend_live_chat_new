@@ -19,6 +19,8 @@ import { LiveChatCardModule } from './live_chat_card/live_chat_card.module';
 import { LiveChatRandomMessageModule } from './live_chat_random_message/live_chat_random_message.module';
 import { LiveChatTimeModule } from './live_chat_time/live_chat_time.module';
 import { FriendModule } from './friend/friend.module';
+import { ConversationModule } from './conversation/conversation.module';
+import { LiveMessageModule } from './live_message/live_message.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -59,6 +61,8 @@ import { FriendModule } from './friend/friend.module';
     LiveChatRandomMessageModule,
     LiveChatTimeModule,
     FriendModule,
+    ConversationModule,
+    LiveMessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

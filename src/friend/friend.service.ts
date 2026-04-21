@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Between, In, Repository } from 'typeorm';
 import { Friend } from './entities/friend.entity';
 
 @Injectable()
@@ -26,4 +26,6 @@ export class FriendService {
       throw error
     }
   }
+
+  
 }

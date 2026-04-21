@@ -30,4 +30,14 @@ export class FriendController {
     };
   }
 
+  // @Get('get-all-friend-user')
+  // async getAllFriendUser(@Req() req: any ) {
+  //   const data = await this.friendService.getAllFriendUser(req);
+  //    return {
+  //     statusCode: 1,
+  //     message: 'get all friend user success!',
+  //     data: data,
+  //   };
+  // }
+
 }

@@ -1,5 +1,6 @@
+import { Conversation } from 'src/conversation/entities/conversation.entity';
 import { Role } from 'src/roles/entities/role.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -43,6 +44,10 @@ export class User {
 
     @Column({ default: 0 })
     sort_order!: number;
+
+    // 💬 các conversation đang phụ trách
+    @OneToMany(() => Conversation, (c) => c.assignedUser)
+    assignedConversations: Conversation[];
 
     @Column({ nullable: true })
     created_at!: number;
