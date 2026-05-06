@@ -37,7 +37,6 @@ export class UsersModule implements NestModule {
         { path: 'users/update-order', method: RequestMethod.POST },
         { path: 'users/get-paging-no-delete', method: RequestMethod.GET },
         { path: 'users/get-paging-user-friend', method: RequestMethod.GET },
-        // { path: 'users/get-paging-user-friend', method: RequestMethod.GET },
       );
   }
 }
