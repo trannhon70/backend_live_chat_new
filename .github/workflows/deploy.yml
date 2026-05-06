@@ -28,7 +28,7 @@ jobs:
             cd /www/wwwroot/backend_live_chat_new || exit 1
 
             # Pull latest code
-            # git config --global --add safe.directory /www/wwwroot/backend_live_chat_new
+            git config --global --add safe.directory /www/wwwroot/backend_live_chat_new
             git pull origin main
 
             # Install + build
@@ -36,10 +36,14 @@ jobs:
             npm run build
 
             # stop old process
-            /www/server/nodejs/v24.15.0/bin/pm2 delete backend_live_chat_new || true
+            # /www/server/nodejs/v24.15.0/bin/pm2 delete backend_live_chat_new || true
 
             # start new process (CHỌN ĐÚNG FILE)
-            /www/server/nodejs/v24.15.0/bin/pm2 start dist/src/main.js --name backend_live_chat_new
+            # /www/server/nodejs/v24.15.0/bin/pm2 start dist/src/main.js --name backend_live_chat_new
+
+            #cách không bị downtime
+            /www/server/nodejs/v24.15.0/bin/pm2 reload backend_live_chat_new || \
+            /www/server/nodejs/v24.15.0/bin/pm2 start dist/src/main.js -i max --name backend_live_chat_new
 
             /www/server/nodejs/v24.15.0/bin/pm2 save
 
