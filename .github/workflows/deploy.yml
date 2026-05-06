@@ -44,5 +44,3 @@ jobs:
             /www/server/nodejs/v24.15.0/bin/pm2 save
 
             echo "===== DEPLOY DONE ====="
-      - name: Wait for server start
-        run: sleep 60
