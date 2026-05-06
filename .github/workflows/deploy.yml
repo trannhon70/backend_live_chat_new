@@ -28,7 +28,7 @@ jobs:
             cd /www/wwwroot/backend_live_chat_new || exit 1
 
             # Pull latest code
-            git config --global --add safe.directory /www/wwwroot/backend_live_chat_new
+            # git config --global --add safe.directory /www/wwwroot/backend_live_chat_new
             git pull origin main
 
             # Install + build
