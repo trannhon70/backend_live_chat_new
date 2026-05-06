@@ -41,10 +41,6 @@ jobs:
             # start new process (CHỌN ĐÚNG FILE)
             # /www/server/nodejs/v24.15.0/bin/pm2 start dist/src/main.js --name backend_live_chat_new
 
-            #cách không bị downtime
-            /www/server/nodejs/v24.15.0/bin/pm2 reload backend_live_chat_new || \
-            /www/server/nodejs/v24.15.0/bin/pm2 start dist/src/main.js -i max --name backend_live_chat_new
-
             /www/server/nodejs/v24.15.0/bin/pm2 save
 
             echo "===== DEPLOY DONE ====="
