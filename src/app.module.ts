@@ -36,8 +36,9 @@ import { LiveMessageModule } from './live_message/live_message.module';
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: true,
-        // logging: true,
+        synchronize: false,
+        retryAttempts: 5,
+        retryDelay: 3000,
         extra: {
           max: 10, // max connections
         },

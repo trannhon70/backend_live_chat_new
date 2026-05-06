@@ -44,7 +44,5 @@ jobs:
             /www/server/nodejs/v24.15.0/bin/pm2 save
 
             echo "===== DEPLOY DONE ====="
-
-        # đợi load
       - name: Wait for server start
         run: sleep 60
