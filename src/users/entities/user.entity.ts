@@ -47,7 +47,7 @@ export class User {
 
     // 💬 các conversation đang phụ trách
     @OneToMany(() => Conversation, (c) => c.assignedUser)
-    assignedConversations: Conversation[];
+    assignedConversations!: Conversation[];
 
     @Column({ nullable: true })
     created_at!: number;

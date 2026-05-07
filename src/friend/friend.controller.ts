@@ -20,24 +20,24 @@ export class FriendController {
     };
   }
 
-   @Get('get-all-by-id/:id')
-  async getAllById(@Req() req: any ,@Param() param: any) {
+  @Get('get-all-by-id/:id')
+  async getAllById(@Req() req: any, @Param() param: any) {
     const data = await this.friendService.getAllById(req, param);
-     return {
+    return {
       statusCode: 1,
       message: 'getAllById friend success!',
       data: data,
     };
   }
 
-  // @Get('get-all-friend-user')
-  // async getAllFriendUser(@Req() req: any ) {
-  //   const data = await this.friendService.getAllFriendUser(req);
-  //    return {
-  //     statusCode: 1,
-  //     message: 'get all friend user success!',
-  //     data: data,
-  //   };
-  // }
+  @Get('get-all-friend-user')
+  async getAllFriendUser(@Req() req: any) {
+    const data = await this.friendService.getAllFriendUser(req.user.id);
+    return {
+      statusCode: 1,
+      message: 'get all friend user success!',
+      data: data,
+    };
+  }
 
 }
