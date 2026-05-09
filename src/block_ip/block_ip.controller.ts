@@ -6,6 +6,7 @@ import { BlockIp } from './entities/block_ip.entity';
 import { Repository } from 'typeorm';
 import { currentTimestamp } from 'utils/currentTimestamp';
 import { DomainEvents } from 'src/kafka/kafka.events';
+import { ClientInfo } from 'src/common/checkIp';
 
 @Controller('block-ip')
 export class BlockIpController {
@@ -78,6 +79,17 @@ export class BlockIpController {
       statusCode: 1,
       message: 'delete block ip success!',
       data: result
+    };
+  }
+
+  @Get('get-all')
+  async getAll(@Req() req: any, @ClientInfo() options: any, @Query() query: any) {
+    const data = await this.blockIpService.getAll(req, query);
+    return {
+      statusCode: 1,
+      message: 'get all block ip success!',
+      data: data,
+      ip: options.ip
     };
   }
 }

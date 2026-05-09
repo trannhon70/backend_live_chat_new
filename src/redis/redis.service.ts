@@ -5,8 +5,8 @@ import Redis, { RedisOptions } from 'ioredis';
 export class RedisService implements OnModuleInit, OnModuleDestroy {
     private readonly logger = new Logger(RedisService.name);
 
-    private redis: Redis;
-    private subscriber: Redis;
+    private redis!: Redis;
+    private subscriber!: Redis;
 
     private readonly redisOptions: RedisOptions = {
         host: process.env.REDIS_HOST || '127.0.0.1',

@@ -10,9 +10,12 @@ import { RoleMiddleware } from 'src/common/middleware/role.middleware';
 import { CheckRoles } from 'utils';
 import { BlockIpRepository } from './block_ip.repository';
 import { BlockIpConsumer } from './block_ip.consumer';
+import { LiveChatTime } from 'src/live_chat_time/entities/live_chat_time.entity';
+import { LiveChatLogo } from 'src/live_chat_logo/entities/live_chat_logo.entity';
+import { LiveChatColor } from 'src/live_chat_color/entities/live_chat_color.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BlockIp, User])],
+  imports: [TypeOrmModule.forFeature([BlockIp, User, LiveChatTime, LiveChatLogo, LiveChatColor])],
   controllers: [BlockIpController, BlockIpConsumer],
   providers: [BlockIpService, BlockIpRepository],
 })

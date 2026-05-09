@@ -16,7 +16,7 @@ export class Conversation {
 
     // Nhân viên đảm nhận chat
     @Column({ name: 'assigned_user_id', nullable: true })
-    assignedUserId!: number | null;
+    assigned_user_id!: number | null;
 
     @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'assigned_user_id' })

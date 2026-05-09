@@ -60,7 +60,7 @@ export class FriendService {
       // Lấy toàn bộ conversation liên quan đến userId trong danh sách
       const conversations = await this.ConversationRepository.find({
         where: {
-          assignedUserId: In(allUserIds),
+          assigned_user_id: In(allUserIds),
           is_online: true,
           created_at: Between(startTimestamp, endTimestamp)
         },

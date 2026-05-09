@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 
 @Injectable()
 export class SocketService {
-    private server: Server;
+    private server!: Server;
 
     setServer(server: Server) {
         this.server = server;

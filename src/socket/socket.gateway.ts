@@ -12,7 +12,7 @@ import { SocketService } from './socket.service';
 })
 export class SocketGateway implements OnGatewayInit {
     @WebSocketServer()
-    server: Server;
+    server!: Server;
 
     constructor(private readonly socketService: SocketService) {
         console.log('✅ SocketGateway initialized');
