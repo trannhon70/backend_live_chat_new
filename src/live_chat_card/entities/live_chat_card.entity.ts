@@ -6,8 +6,8 @@ export class LiveChatCard {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: 'text', nullable: true  })
-    name: string;
+    @Column({ type: 'text', nullable: true })
+    name!: string;
 
     //Người tạo
     @Column({ nullable: true })
@@ -18,5 +18,5 @@ export class LiveChatCard {
     user!: User;
     //thời gian tạo
     @Column()
-    created_at: number;
+    created_at!: number;
 }

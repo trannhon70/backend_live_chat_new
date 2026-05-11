@@ -7,24 +7,26 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { LiveChatRandomMessage } from './entities/live_chat_random_message.entity';
 import { LiveChatRandomMessageRepository } from './live_chat_random_message.repository';
+import { Conversation } from 'src/conversation/entities/conversation.entity';
+import { LiveChatCard } from 'src/live_chat_card/entities/live_chat_card.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([LiveChatRandomMessage, User])],
+  imports: [TypeOrmModule.forFeature([LiveChatRandomMessage, User, Conversation, LiveChatCard])],
   controllers: [LiveChatRandomMessageController],
   providers: [LiveChatRandomMessageService, LiveChatRandomMessageRepository],
 })
 // export class LiveChatRandomMessageModule {}
 export class LiveChatRandomMessageModule implements NestModule {
-  
-   configure(consumer: MiddlewareConsumer) {
-       consumer
-         .apply(AuthMiddleware, LoggerMiddleware) 
-         .forRoutes( 
-            { path: 'live-chat-random-message/create', method: RequestMethod.POST },
-            { path: 'live-chat-random-message/get-paging', method: RequestMethod.GET },
-            { path: 'live-chat-random-message/update/:id', method: RequestMethod.PUT },
-            { path: 'live-chat-random-message/delete/:id', method: RequestMethod.DELETE },
-           
-       ); 
-   }
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware, LoggerMiddleware)
+      .forRoutes(
+        { path: 'live-chat-random-message/create', method: RequestMethod.POST },
+        { path: 'live-chat-random-message/get-paging', method: RequestMethod.GET },
+        { path: 'live-chat-random-message/update/:id', method: RequestMethod.PUT },
+        { path: 'live-chat-random-message/delete/:id', method: RequestMethod.DELETE },
+
+      );
   }
+}
